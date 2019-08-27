@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "EMG_LAB", "EMG_LAB.pyproj", "{9AF6A20F-41D6-4298-BC98-4E4CEE4138C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9AF6A20F-41D6-4298-BC98-4E4CEE4138C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AF6A20F-41D6-4298-BC98-4E4CEE4138C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26B53565-DAEE-4C57-8EBE-27EBEFD33DC4}
+	EndGlobalSection
+EndGlobal
