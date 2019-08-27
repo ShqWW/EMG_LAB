@@ -1,11 +1,11 @@
 import sys
 import platform
-
+import emg_core
 if platform.platform()[0]=="L":
     import emg_gui_linux as emg_gui
 elif platform.platform()[0]=="W":
     import emg_gui_linux as emg_gui
-import emg_core
+
 
 if __name__=="__main__":
     c=emg_core.core()
