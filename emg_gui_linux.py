@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (QMainWindow,QApplication,QComboBox,
-                QDesktopWidget,QPushButton,QWidget,QLabel,QLineEdit,QCheckBox,QVBoxLayout)
+                QDesktopWidget,QPushButton,QWidget,QLabel,QLineEdit,QCheckBox,QVBoxLayout,QMessageBox)
 from PyQt5.QtGui import QIcon,QPalette,QColor,QPixmap
 from PyQt5.QtCore import Qt,QTimer,QCoreApplication
 import threading
@@ -37,7 +37,6 @@ class First_window(QMainWindow):
         btn=QPushButton('Confirm',self)
         btn.setStyleSheet("font:15pt;background-color:rgb(72,209,204);")
         btn.clicked.connect(self.send_para)
-        #btn.clicked.connect(self.test)
         btn.resize(btn.sizeHint())
         btn.move(160,520)
         btn.setShortcut(Qt.Key_Return)#设置回车快捷键
@@ -337,7 +336,7 @@ class ctnd_window(QWidget):
     def start_show(self):
         self.show()
         self.timer.start(1000) #设置计时间隔并启动
-        self.timr=1
+        self.timr=3
     def ctn(self):
         self.timr-=1
         self.label1.setPixmap(QPixmap("./source/cntd"+str(self.timr)+".png"))
@@ -363,7 +362,7 @@ class cafebreak_window(QWidget):
     def start_show(self):
         self.show()
         self.timer.start(1000)
-        self.show_time=2
+        self.show_time=5
     def showing(self):
         self.show_time-=1
         if self.show_time==0:
@@ -427,7 +426,19 @@ class predict_window(QWidget):
         self.vlayout.addWidget(self.label,0,Qt.AlignVCenter|Qt.AlignCenter)
         self.vlayout.addWidget(self.picture,0,Qt.AlignVCenter|Qt.AlignCenter)
         self.setLayout(self.vlayout)
-
+    def start_show(self):
+        self.show()
+        self.t=threading.Thread(target=self.main_core.predict)
+        self.t.start()
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, 'Message',
+            "Are you sure to quit?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            self.main_core.TERMINATED=True           
+            event.accept()
+        else:
+            event.ignore()
 class predict_guide():
     def __init__(self,main_core):
         self.main_core=main_core
@@ -435,8 +446,7 @@ class predict_guide():
         self.timer.timeout.connect(self.updating)
         self.window=predict_window(self.main_core)
     def predict_start(self):
-        threading.Thread(target=self.main_core.predict).start()
-        self.window.show()
+        self.window.start_show()
         self.timer.start(200)
     def updating(self):
         self.window.change_label(self.main_core.y_pre[0],self.main_core.y_pre[1])

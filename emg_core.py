@@ -94,8 +94,8 @@ class core():
         emg_conf = (self.host, self.emg_port)
         self.CTL_CLI = socket(AF_INET, SOCK_STREAM)
         self.EMG_CLI = socket(AF_INET, SOCK_STREAM)
-        self.CTL_CLI.settimeout(1)
-        self.EMG_CLI.settimeout(1)#timeout limited 
+        self.CTL_CLI.settimeout(5)
+        self.EMG_CLI.settimeout(5)#timeout limited 
         # Connect to DELSYS' server
         self.connecting=True
         try:
@@ -221,7 +221,7 @@ class core():
         #self.CTL_CLI.send(ctl_data.encode())
 
         #while not self.TERMINATED:
-        while True:
+        while not self.TERMINATED:
             # receive one observation
             # raw_emg_data = self.receive()
 

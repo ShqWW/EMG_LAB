@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9af6a20f-41d6-4298-bc98-4e4cee4138c6}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>main_process.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include=".vscode\.ropeproject\config.py" />
+    <Compile Include="emg_core.py" />
+    <Compile Include="emg_gui_linux.py" />
+    <Compile Include="main_process.py" />
+    <Compile Include="util.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="source\6+1.jpg" />
+    <Content Include="source\appicon.png" />
+    <Content Include="source\break.png" />
+    <Content Include="source\ccwise.jpg" />
+    <Content Include="source\cntd1.png" />
+    <Content Include="source\cntd2.png" />
+    <Content Include="source\cntd3.png" />
+    <Content Include="source\cwise.jpg" />
+    <Content Include="source\hand gestures.jpg" />
+    <Content Include="source\hold.jpg" />
+    <Content Include="source\ID.txt" />
+    <Content Include="source\IP.txt" />
+    <Content Include="source\ok.jpg" />
+    <Content Include="source\relax.jpg" />
+    <Content Include="source\split.jpg" />
+    <Content Include="source\stretch.jpg" />
+    <Content Include="source\thumb.jpg" />
+    <Content Include="source\v.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".vscode\" />
+    <Folder Include=".vscode\.ropeproject" />
+    <Folder Include="source" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
