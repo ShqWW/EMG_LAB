@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import (QMainWindow,QApplication,QComboBox,
-                QDesktopWidget,QPushButton,QWidget,QLabel,QLineEdit,QCheckBox,QVBoxLayout,QMessageBox)
+from PyQt5.QtWidgets import (QMainWindow,QApplication,QComboBox,QDesktopWidget,QPushButton,QWidget,QLabel,
+                             QLineEdit,QCheckBox,QVBoxLayout,QMessageBox)
 from PyQt5.QtGui import QIcon,QPalette,QColor,QPixmap
 from PyQt5.QtCore import Qt,QTimer,QCoreApplication
 import threading
@@ -16,11 +16,10 @@ def set_color(window,R=245,G=222,B=179):
     window.setPalette(palette)
 
 class First_window(QMainWindow):
-    def __init__(self,main_core,train_gui):
+    def __init__(self,main_core):
         super().__init__()
         
         self.main_core=main_core
-        self.train_gui=train_gui
         set_color(self)
         window_width,window_height=400,600
         screen_center(self,window_width,window_height)
@@ -85,10 +84,6 @@ class First_window(QMainWindow):
                 box_label.setText("s"+str(4*i+j+1))
                 box_label.setStyleSheet("font:15pt")
                 box_label.move(65+90*j,173+90*i)
-    # def test(self):
-    #     global train_gui
-    #     self.close()
-    #     train_gui.work()
     def send_para(self):
         ID=self.line1.text()
         IP=self.line2.text()
@@ -102,13 +97,12 @@ class First_window(QMainWindow):
                 channel.append(i)
         self.main_core.para_pass(ID,IP,channel)
         self.close()
-        self.next_window=connecting_window(self.main_core,self.train_gui)
+        self.next_window=connecting_window(self.main_core)
         self.next_window.show()
         self.next_window.connecting()
 class connecting_window(QWidget):
-    def __init__(self,main_core,train_gui):
+    def __init__(self,main_core):
         self.main_core=main_core
-        self.train_gui=train_gui
         super().__init__()
         self.setWindowTitle("Connection")
         set_color(self)
@@ -130,7 +124,7 @@ class connecting_window(QWidget):
             pass
         else:
             self.close()
-            self.next_window=connected_window(self.main_core,self.train_gui)
+            self.next_window=connected_window(self.main_core)
             self.next_window.change_label()
             self.timer.stop()
             self.next_window.show()
@@ -147,9 +141,8 @@ class connecting_window(QWidget):
         self.close()
         #QCoreApplication.instance().quit
 class connected_window(QWidget):
-    def __init__(self,main_core,train_gui):
+    def __init__(self,main_core):
         self.main_core=main_core
-        self.train_gui=train_gui
         super().__init__()
         self.setWindowTitle("Connection")
         set_color(self)
@@ -173,20 +166,20 @@ class connected_window(QWidget):
         else:
             self.label.setText("Connection failed!")
     def check(self):
-        global forth_window
         if self.main_core.con_success:
             print("success")
+            self.next_window=init_train_test_window(self.main_core)
+            self.next_window.show()
             self.close()
         else:
             print("fail")
-            self.next_window=init_train_test_window(self.main_core,self.train_gui)
+            self.next_window=init_train_test_window(self.main_core)
             self.next_window.show()
             self.close()
 class init_train_test_window(QWidget):
-    def __init__(self,main_core,train_gui):
+    def __init__(self,main_core):
         super().__init__()
         self.main_core=main_core
-        self.train_gui=train_gui
         self.method_choose="SVM"
         self.train_num=1
         self.mode="Train"
@@ -273,17 +266,17 @@ class init_train_test_window(QWidget):
     def change_mode(self,text):
         self.mode=self.mode_list[text]
     def init_core(self):
-        print(self.mode)
         for i in range(9):
             if (self.checkBox_list[i].isChecked()==True):
                 self.gestures.append(self.image_list[i])
         self.main_core.init_train_test(self.gestures,self.method_choose,self.mode,self.train_num)
         self.close()
         if self.main_core.mode=="Train":
+            self.train_gui=train_guide(self.main_core)
             self.train_gui.work()
         elif self.main_core.mode=="Predict":
             self.pre=predict_guide(self.main_core)
-            self.pre.predict_start()
+            self.pre.work()
 
         
 
@@ -404,7 +397,7 @@ class train_guide():
         else:
             self.main_core.train()
             self.predict_guide=predict_guide(self.main_core)
-            self.predict_guide.predict_start()
+            self.predict_guide.work()
 
 class predict_window(QWidget):
     def __init__(self,main_core):
@@ -445,7 +438,7 @@ class predict_guide():
         self.timer=QTimer()
         self.timer.timeout.connect(self.updating)
         self.window=predict_window(self.main_core)
-    def predict_start(self):
+    def work(self):
         self.window.start_show()
         self.timer.start(200)
     def updating(self):

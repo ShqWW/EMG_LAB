@@ -10,25 +10,6 @@ import pickle
 import scipy.io as scio
 PATH_PREFIX = "./models"
 
-# Connection Configuration
-# HOST = ""
-# MAIN_PORT = 50040
-# EMG_PORT = 50043
-# SAMPLE_UNIT = 4 * 16  # 4 bytes per channel, non-changeable
-# SAMPLE_RATE = 2000  # Default in DELSYS' server, non-changeable
-
-# # Parameters
-# SENSORS = []  # support multiple input channels
-# MODEL = "SVM"
-# NUM_FEAT = None  # number of features
-# SAMPLE_TIME = 0.5  # second. a fixed time length for processing EMG data
-# TRAINING_UNIT = int(5 / SAMPLE_TIME)  # observations for one class, e.g. 5s
-# SESSION_NUM = 5
-# GESTURES = []
-# MODE=0
-# CTL_CLI = None
-# EMG_CLI = None
-# PERSON_ID=None
 
 
 
@@ -103,7 +84,7 @@ class core():
             self.EMG_CLI.connect(emg_conf)
             self.con_success=True
         except:
-            self.con_success = False  # True for debug
+            self.con_success = False  
         finally:
             self.CTL_CLI.settimeout(None)
             self.EMG_CLI.settimeout(None)#timeout unlimited
@@ -117,9 +98,9 @@ class core():
         self.model=model
         self.mode=mode
         self.session_num=train_num
-        self.directory="./"+self.person_id+"/"
-        if not os.path.exists(self.directory):
-            os.makedirs(self.directory)
+        #  self.directory="./"+self.person_id+"/"
+        #if not os.path.exists(self.directory):
+        #    os.makedirs(self.directory)
         self.num_feat = 6 * len(self.sensors)
         self.training_data = np.zeros(shape=(1, self.num_feat + 1))
         self.train_data_tmp = np.ones(shape=(1, self.num_feat + 1))
