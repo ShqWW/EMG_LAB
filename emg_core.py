@@ -235,7 +235,6 @@ class core():
             #     int(prediction[0]),
             #     prediction[1],
             # ) 
-            print(prediction)
             self.y_pre=[self.label_encoder.inverse_transform([int(prediction[0])])[0],str(round(prediction[1],4))]
             self.CHANGE_FLAG = True
 
