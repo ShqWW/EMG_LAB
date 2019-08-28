@@ -4,7 +4,7 @@ import emg_core
 if platform.platform()[0]=="L":
     import emg_gui_linux as emg_gui
 elif platform.platform()[0]=="W":
-    import emg_gui_linux as emg_gui
+    import emg_gui_windows as emg_gui
 
 
 if __name__=="__main__": 

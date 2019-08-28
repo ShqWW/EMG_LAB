@@ -22,6 +22,9 @@
     <Compile Include=".vscode\.ropeproject\config.py" />
     <Compile Include="emg_core.py" />
     <Compile Include="emg_gui_linux.py" />
+    <Compile Include="emg_gui_windows.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="main_process.py" />
     <Compile Include="util.py" />
   </ItemGroup>
