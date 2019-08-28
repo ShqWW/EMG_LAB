@@ -26,6 +26,7 @@
     <Compile Include="util.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Delsys Application Program Interface User’s Guide.pdf" />
     <Content Include="source\6+1.jpg" />
     <Content Include="source\appicon.png" />
     <Content Include="source\break.png" />
@@ -44,6 +45,8 @@
     <Content Include="source\stretch.jpg" />
     <Content Include="source\thumb.jpg" />
     <Content Include="source\v.jpg" />
+    <Content Include="Trigno™ Digital SDK.pdf" />
+    <Content Include="Trigno™ Wireless System SDK.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".vscode\" />
