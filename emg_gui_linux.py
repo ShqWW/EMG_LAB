@@ -94,7 +94,7 @@ class First_window(QMainWindow):
         channel=[]
         for i in range(16):
             if (self.checkBox[i].isChecked()==True):
-                channel.append(i)
+                channel.append(i+1)
         self.main_core.para_pass(ID,IP,channel)
         self.close()
         self.next_window=connecting_window(self.main_core)

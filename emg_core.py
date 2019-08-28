@@ -2,6 +2,7 @@ import numpy as np
 import time
 from socket import*
 import os
+import struct
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelEncoder
 from time import sleep
@@ -53,6 +54,7 @@ class core():
         self.person_id=ID
         self.host=IP
         self.sensors=channel
+        print(self.sensors)
     def receive(self, sample_num=None):
         if sample_num==None:
             sample_num=int(self.sample_time * self.sample_rate)
@@ -66,7 +68,7 @@ class core():
         for sample_index in range(sample_num):
             tmp_data_rcv = self.EMG_CLI.recv(64)
             while len(tmp_data_rcv) < 64:
-                tmp_data_rcv += EMG_CLI.recv(1)
+                tmp_data_rcv += self.EMG_CLI.recv(1)
             raw_emg_data[sample_index] = tmp_data_rcv
         return raw_emg_data
 
@@ -115,23 +117,23 @@ class core():
     def collect_train(self):
         self.collecting=True
         ctl_data = "START\r\n\r\n"
-        #self.CTL_CLI.send(ctl_data.encode())
+        self.CTL_CLI.send(ctl_data.encode())
 
         for _ in range(self.training_unit):
             # receive one observation
-            #raw_emg_data = self.receive()
+            raw_emg_data = self.receive()
             # decode raw data into floats
             emg_data = np.zeros(shape=(int(self.sample_time * self.sample_rate), len(self.sensors)))
 
-            # for (sample_index, _), chunk_data in np.ndenumerate(raw_emg_data):
-            #     for id_index, sensor_id in enumerate(self.sensors):
-            #         raw_tmp = chunk_data[(sensor_id - 1) * 4 : sensor_id * 4]
-            #         decoded_data = struct.unpack("f", raw_tmp)[0]
-            #         emg_data[sample_index][id_index] = decoded_data
+            for (sample_index, _), chunk_data in np.ndenumerate(raw_emg_data):
+                for id_index, sensor_id in enumerate(self.sensors):
+                    raw_tmp = chunk_data[(sensor_id - 1) * 4 : sensor_id * 4]
+                    decoded_data = struct.unpack("f", raw_tmp)[0]
+                    emg_data[sample_index][id_index] = decoded_data
 
             # # fake data
             #sleep(self.sample_time)
-            emg_data = np.random.rand(int(self.sample_time * self.sample_rate), len(self.sensors))
+            #emg_data = np.random.rand(int(self.sample_time * self.sample_rate), len(self.sensors))
 
             # update recorded emg
             self.emg_data = np.append(self.emg_data, emg_data, axis=0)
@@ -147,7 +149,7 @@ class core():
 
         # Stop transmission
         ctl_data = "STOP\r\n\r\n"
-        #self.CTL_CLI.send(ctl_data.encode())
+        self.CTL_CLI.send(ctl_data.encode())
         self.collecting=False
     def train(self):
         # collect training data
@@ -199,27 +201,27 @@ class core():
 
         # Init transmission
         ctl_data = "START\r\n\r\n"
-        #self.CTL_CLI.send(ctl_data.encode())
+        self.CTL_CLI.send(ctl_data.encode())
 
         #while not self.TERMINATED:
         while not self.TERMINATED:
             # receive one observation
-            # raw_emg_data = self.receive()
+            raw_emg_data = self.receive()
 
             # decode raw data into floats
             emg_data = np.zeros(shape=(int(self.sample_time * self.sample_rate), len(self.sensors)))
-            # for (sample_index, _), chunk_data in np.ndenumerate(raw_emg_data):
-            #     for id_index, sensor_id in enumerate(self.sensors):
-            #         raw_tmp = chunk_data[(sensor_id - 1) * 4 : sensor_id * 4]
-            #         decoded_data = struct.unpack("f", raw_tmp)[0]
-            #         emg_data[sample_index][id_index] = decoded_data
+            for (sample_index, _), chunk_data in np.ndenumerate(raw_emg_data):
+                for id_index, sensor_id in enumerate(self.sensors):
+                    raw_tmp = chunk_data[(sensor_id - 1) * 4 : sensor_id * 4]
+                    decoded_data = struct.unpack("f", raw_tmp)[0]
+                    emg_data[sample_index][id_index] = decoded_data
 
             # fake data
-            sleep(self.sample_time)
-            emg_data = np.random.rand(int(self.sample_time * self.sample_rate), len(self.sensors))
+            #sleep(self.sample_time)
+            #emg_data = np.random.rand(int(self.sample_time * self.sample_rate), len(self.sensors))
 
-            for sensor_id, sensor in enumerate(self.sensors):
-                self.signal[:, sensor - 1] = emg_data[:, sensor_id]
+            #for sensor_id, sensor in enumerate(self.sensors):
+            #    self.signal[:, sensor - 1] = emg_data[:, sensor_id]
 
             # calculate feature
             data_tmp = util.feat_gen(emg_data, waveLength=1, mav=1, ar4c=1)
@@ -232,8 +234,9 @@ class core():
             #     + str(prediction[1]),
             #     int(prediction[0]),
             #     prediction[1],
-            # )
-            self.y_pre=[self.label_encoder.inverse_transform([int(prediction[0])])[0],str(round(prediction[1],2))]
+            # ) 
+            print(prediction)
+            self.y_pre=[self.label_encoder.inverse_transform([int(prediction[0])])[0],str(round(prediction[1],4))]
             self.CHANGE_FLAG = True
 
         
