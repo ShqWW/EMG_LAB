@@ -206,7 +206,7 @@ class init_train_test_window(QWidget):
         label3.setStyleSheet("font:15pt")
         label3.move(80,123)
     def add_combox(self):
-        self.method_list=["SVM","ELM"]
+        self.method_list=["SVM"]
         self.train_num_list=["1","2","3","4","5"]
         self.mode_list=["Train","Predict"]
         self.image_list=["relax","hold","split","cwise","ccwise","thumb","stretch","ok","6+1"]
